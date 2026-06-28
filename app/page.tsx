@@ -4,6 +4,7 @@ import { ArrowRight, Mail } from 'lucide-react';
 import { getAllPosts } from '@/lib/markdown';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { AdSense } from '@/components/ads/AdSense';
+import { HomeNewsletterForm } from '@/components/home/HomeNewsletterForm';
 
 export default function Home() {
   const posts = getAllPosts();
@@ -182,20 +183,7 @@ export default function Home() {
               Get the latest insights, trends, and career advice delivered straight to your inbox every week. No spam, just value.
             </p>
             
-            <form className="flex flex-col sm:flex-row max-w-xl mx-auto gap-4" action="#">
-              <input 
-                type="email" 
-                placeholder="Enter your email address" 
-                className="flex-grow px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
-                required
-              />
-              <button 
-                type="submit"
-                className="px-8 py-4 bg-white text-blue-600 hover:bg-blue-50 rounded-full font-bold transition-colors whitespace-nowrap"
-              >
-                Subscribe Now
-              </button>
-            </form>
+            <HomeNewsletterForm />
           </div>
         </div>
       </section>

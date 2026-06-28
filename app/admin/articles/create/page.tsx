@@ -78,6 +78,22 @@ export default function AdminCreateArticle() {
 
       await addDoc(collection(db, "articles"), articleData);
       
+      // Trigger Newsletter Email
+      try {
+        fetch('/api/send-newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title,
+            slug,
+            description: metaDescription
+          })
+        });
+        // We don't await this because we want to return immediately and let it send in the background
+      } catch (e) {
+        console.error("Failed to trigger newsletter", e);
+      }
+
       alert("Article published successfully!");
       router.push('/admin/articles');
     } catch (error) {

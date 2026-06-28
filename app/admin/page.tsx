@@ -1,16 +1,50 @@
-import Link from 'next/link';
-import { FileText, Users, Eye, TrendingUp, Plus, Tags, MessageSquare, Image as ImageIcon } from 'lucide-react';
+"use client";
 
-export const metadata = {
-  title: 'Dashboard | GenZ Admin',
-};
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { FileText, Users, Eye, TrendingUp, Plus, Tags, MessageSquare, Image as ImageIcon } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function AdminDashboard() {
+  const [totalArticles, setTotalArticles] = useState(0);
+  const [publishedArticles, setPublishedArticles] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
+  const [totalSubscribers, setTotalSubscribers] = useState(0);
+  const [recentArticles, setRecentArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        // Fetch Articles
+        const articlesSnap = await getDocs(collection(db, 'articles'));
+        const articles = articlesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setTotalArticles(articles.length);
+        setPublishedArticles(articles.length); // Assuming all are published for now
+        
+        // Extract Unique Categories
+        const categories = new Set(articles.map((a: any) => a.category).filter(Boolean));
+        setTotalCategories(categories.size);
+
+        // Fetch Subscribers (Messages proxy)
+        const subSnap = await getDocs(collection(db, 'subscribers'));
+        setTotalSubscribers(subSnap.size);
+
+        // Recent Articles
+        setRecentArticles(articles.sort((a: any, b: any) => b.createdAt - a.createdAt).slice(0, 5));
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   const stats = [
-    { title: 'Total Articles', value: '0', icon: FileText, change: '0%', color: 'text-blue-500' },
-    { title: 'Published', value: '0', icon: Eye, change: '0%', color: 'text-emerald-500' },
-    { title: 'Total Categories', value: '0', icon: Tags, change: '0%', color: 'text-purple-500' },
-    { title: 'Messages', value: '0', icon: MessageSquare, change: '0%', color: 'text-amber-500' },
+    { title: 'Total Articles', value: totalArticles.toString(), icon: FileText, change: '100%', color: 'text-blue-500' },
+    { title: 'Published', value: publishedArticles.toString(), icon: Eye, change: '100%', color: 'text-emerald-500' },
+    { title: 'Total Categories', value: totalCategories.toString(), icon: Tags, change: '100%', color: 'text-purple-500' },
+    { title: 'Subscribers', value: totalSubscribers.toString(), icon: Users, change: '100%', color: 'text-amber-500' },
   ];
 
   return (
@@ -70,11 +104,21 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                <tr>
-                  <td colSpan={3} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
-                    No articles found. Start writing!
-                  </td>
-                </tr>
+                {recentArticles.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                      No articles found. Start writing!
+                    </td>
+                  </tr>
+                ) : (
+                  recentArticles.map(article => (
+                    <tr key={article.id}>
+                      <td className="px-6 py-4 text-slate-900 dark:text-white font-medium">{article.title}</td>
+                      <td className="px-6 py-4"><span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs font-medium">Published</span></td>
+                      <td className="px-6 py-4 text-slate-500">{new Date().toLocaleDateString()}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
