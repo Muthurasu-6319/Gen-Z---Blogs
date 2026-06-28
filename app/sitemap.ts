@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
-import { getPostSlugs } from '@/lib/markdown';
+import { collection, getDocs, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://genzblog.example.com';
   
   // Static routes
@@ -12,14 +13,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Dynamic blog routes
-  const slugs = getPostSlugs();
-  const blogRoutes = slugs.map((slug) => ({
-    url: `${baseUrl}/blog/${slug.replace(/\.md$/, '')}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
+  // Dynamic blog routes from Firebase
+  let blogRoutes: any[] = [];
+  try {
+    const querySnapshot = await getDocs(collection(db, 'articles'));
+    blogRoutes = querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      let lastMod = new Date();
+      if (data.updatedAt) {
+        if (data.updatedAt instanceof Timestamp || data.updatedAt.toDate) {
+          lastMod = data.updatedAt.toDate();
+        } else {
+          lastMod = new Date(data.updatedAt);
+        }
+      }
+      return {
+        url: `${baseUrl}/blog/${data.slug}`,
+        lastModified: lastMod,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      };
+    });
+  } catch (e) {
+    console.error("Sitemap error:", e);
+  }
 
   return [...routes, ...blogRoutes];
 }
