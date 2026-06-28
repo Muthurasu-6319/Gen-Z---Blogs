@@ -5,7 +5,7 @@ import { ArrowLeft, Save, Link as LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { db } from '@/lib/firebase';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp, collection, getDocs } from 'firebase/firestore';
 import dynamic from 'next/dynamic';
 import { useTheme } from 'next-themes';
 
@@ -38,6 +38,23 @@ export default function AdminEditArticle() {
   const [category, setCategory] = useState('');
   const [customCategory, setCustomCategory] = useState('');
   const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [availableCategories, setAvailableCategories] = useState<string[]>(['AI', 'Technology', 'Lifestyle']);
+
+  // Fetch unique categories on load
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'articles'));
+        const cats = new Set(snap.docs.map(d => d.data().category).filter(Boolean));
+        if (cats.size > 0) {
+          setAvailableCategories(Array.from(cats) as string[]);
+        }
+      } catch (e) {
+        console.error('Failed to fetch categories', e);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // Fetch article data
   useEffect(() => {
@@ -58,11 +75,11 @@ export default function AdminEditArticle() {
           setAuthorName(data.authorName || 'Admin Team');
           setImageUrl(data.imageUrl || '');
           
-          if (['AI', 'Technology', 'Lifestyle'].includes(data.category)) {
+          if (availableCategories.includes(data.category)) {
             setCategory(data.category);
           } else {
-            setIsCustomCategory(true);
-            setCustomCategory(data.category);
+            // It might be a category that's not in the default list but we just fetched them
+            // We can just set it as category since the dropdown will populate from availableCategories
             setCategory(data.category);
           }
         } else {
@@ -266,9 +283,9 @@ export default function AdminEditArticle() {
                       className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-slate-50 dark:bg-slate-900/50 focus:ring-2 focus:ring-blue-500 outline-none mb-2"
                     >
                       <option value="">Select a category</option>
-                      <option value="AI">AI</option>
-                      <option value="Technology">Technology</option>
-                      <option value="Lifestyle">Lifestyle</option>
+                      {availableCategories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
                       <option value="custom">+ Create New Category</option>
                     </select>
                   </>
