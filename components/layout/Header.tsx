@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { Sun, Moon, Menu, X, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -45,11 +46,24 @@ export function Header() {
     )}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-              GenZ Articles
-            </span>
+          {/* Logo & Branding */}
+          <Link href="/" className="flex-shrink-0 flex items-center gap-3">
+            <Image 
+              src="https://ik.imagekit.io/muthurasu/GEN%20Z/GEN_Z_LOGO__2_-removebg-preview.png.png?updatedAt=1782569180718"
+              alt="GenZ Logo"
+              width={56}
+              height={56}
+              className="object-contain"
+              priority
+            />
+            <div className="flex flex-col">
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 leading-tight">
+                GenZBlogs
+              </span>
+              <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-500 dark:text-slate-400 leading-tight">
+                Modern Insights
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Nav */}

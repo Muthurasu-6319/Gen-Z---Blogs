@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaTwitter, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa';
+import Image from 'next/image';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -18,10 +19,22 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="inline-block mb-4">
-              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                GenZ Articles
-              </span>
+            <Link href="/" className="inline-flex items-center gap-3 mb-6">
+              <Image 
+                src="https://ik.imagekit.io/muthurasu/GEN%20Z/GEN_Z_LOGO__2_-removebg-preview.png.png?updatedAt=1782569180718"
+                alt="GenZ Logo"
+                width={56}
+                height={56}
+                className="object-contain"
+              />
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 leading-tight">
+                  GenZBlogs
+                </span>
+                <span className="text-xs uppercase tracking-widest font-semibold text-slate-500 dark:text-slate-400 leading-tight">
+                  Modern Insights
+                </span>
+              </div>
             </Link>
             <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-sm">
               Exploring the latest trends, technology, and insights for the modern generation. Join our worldwide audience.
