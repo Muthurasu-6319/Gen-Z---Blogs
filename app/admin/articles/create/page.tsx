@@ -34,6 +34,7 @@ export default function AdminCreateArticle() {
   const [category, setCategory] = useState('');
   const [customCategory, setCustomCategory] = useState('');
   const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [isFeatured, setIsFeatured] = useState(false);
 
   // Auto-generate slug and meta title from title
   useEffect(() => {
@@ -71,6 +72,7 @@ export default function AdminCreateArticle() {
         metaKeywords,
         imageUrl,
         category,
+        isFeatured,
         status: 'published',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -301,6 +303,19 @@ export default function AdminCreateArticle() {
                     <img src={imageUrl} alt="Featured preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
                   </div>
                 )}
+              </div>
+
+              <div>
+                <label className="flex items-center space-x-3 mt-4">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-slate-900 dark:text-white">Mark as Featured Article</span>
+                </label>
+                <p className="text-xs text-slate-500 mt-1 ml-8">Featured articles will appear at the top of the Home Page.</p>
               </div>
             </div>
           </div>

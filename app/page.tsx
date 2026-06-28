@@ -1,23 +1,48 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Mail } from 'lucide-react';
-import { getAllPosts } from '@/lib/markdown';
+import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { BlogPost } from '@/types';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { AdSense } from '@/components/ads/AdSense';
 import { HomeNewsletterForm } from '@/components/home/HomeNewsletterForm';
 
-export default function Home() {
-  const posts = getAllPosts();
-  const featuredPost = posts[0];
-  const latestPosts = posts.slice(1, 7);
+// Add revalidation for ISR if needed
+export const revalidate = 60;
 
-  const categories = [
-    { name: 'AI', count: 12 },
-    { name: 'Technology', count: 18 },
-    { name: 'Programming', count: 24 },
-    { name: 'Tutorials', count: 15 },
-    { name: 'Online Earning', count: 8 },
-  ];
+export default async function Home() {
+  let posts: any[] = [];
+  try {
+    const articlesSnap = await getDocs(query(collection(db, 'articles'), orderBy('createdAt', 'desc')));
+    posts = articlesSnap.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        date: data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : 'Recent',
+        image: data.imageUrl || '/default-blog.jpg',
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+  }
+
+  const featuredPost = posts.find(post => post.isFeatured) || posts[0];
+  const latestPosts = posts.filter(post => post.id !== featuredPost?.id).slice(0, 6);
+
+  // Calculate categories dynamically
+  const categoryCounts: Record<string, number> = {};
+  posts.forEach(post => {
+    if (post.category) {
+      categoryCounts[post.category] = (categoryCounts[post.category] || 0) + 1;
+    }
+  });
+  
+  const categories = Object.keys(categoryCounts).map(name => ({
+    name,
+    count: categoryCounts[name]
+  })).sort((a, b) => b.count - a.count).slice(0, 5);
 
   return (
     <div className="min-h-screen">
