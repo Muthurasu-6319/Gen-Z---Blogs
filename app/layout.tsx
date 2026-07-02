@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Header } from "@/components/layout/Header";
@@ -66,11 +67,25 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
+  try {
+    const docRef = doc(db, 'settings', 'general');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists() && docSnap.data().adsenseId) {
+      adsenseId = docSnap.data().adsenseId;
+    }
+  } catch (error) {
+    console.error("Error fetching AdSense ID:", error);
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -130,6 +145,14 @@ export default function RootLayout({
         </ThemeProvider>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
+        {adsenseId && (
+          <Script
+            async
+            strategy="afterInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+            crossOrigin="anonymous"
+          />
         )}
       </body>
     </html>
