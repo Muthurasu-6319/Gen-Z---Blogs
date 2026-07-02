@@ -136,8 +136,69 @@ export default async function BlogPost({ params }: Props) {
     return `<h${level} id="${id}" class="scroll-mt-24 font-bold mt-8 mb-4">${text}</h${level}>`;
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com';
+  const articleUrl = `${baseUrl}/blog/${resolvedParams.slug}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${articleUrl}/#article`,
+        "isPartOf": {
+          "@id": `${baseUrl}/#website`
+        },
+        "headline": post.title,
+        "description": post.description,
+        "image": post.image,
+        "datePublished": post.date,
+        "dateModified": post.date, // Add updatedAt if available later
+        "author": {
+          "@type": "Person",
+          "name": post.authorName,
+          "url": baseUrl
+        },
+        "publisher": {
+          "@id": `${baseUrl}/#organization`
+        },
+        "wordCount": post.content.split(' ').length,
+        "keywords": post.metaKeywords || post.category,
+        "articleSection": post.category,
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${articleUrl}/#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": baseUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": `${baseUrl}/blog`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": post.title,
+            "item": articleUrl
+          }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="bg-white dark:bg-slate-950 min-h-screen relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ReadingProgress />
       {/* Header Section */}
       <div className="pt-20 pb-12 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
