@@ -136,7 +136,7 @@ export default async function BlogPost({ params }: Props) {
     return `<h${level} id="${id}" class="scroll-mt-24 font-bold mt-8 mb-4">${text}</h${level}>`;
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com';
   const articleUrl = `${baseUrl}/blog/${resolvedParams.slug}`;
 
   const jsonLd = {

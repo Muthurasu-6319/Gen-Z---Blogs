@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/sitemap.xml`,
   };
 }

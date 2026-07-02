@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaTwitter, FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa';
+import { FaTwitter, FaFacebook, FaInstagram, FaGithub, FaYoutube, FaLinkedin } from 'react-icons/fa';
 import Image from 'next/image';
 
 export function Footer() {
@@ -40,21 +40,25 @@ export function Footer() {
               Exploring the latest trends, technology, and insights for the modern generation. Join our worldwide audience.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-slate-400 hover:text-blue-500 transition-colors">
-                <span className="sr-only">Twitter</span>
+              <a href="https://x.com/GenzNeuralX" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors">
+                <span className="sr-only">X (Twitter)</span>
                 <FaTwitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-blue-600 transition-colors">
+              <a href="https://www.facebook.com/profile.php?id=61591068687800" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors">
                 <span className="sr-only">Facebook</span>
                 <FaFacebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-pink-600 transition-colors">
+              <a href="https://www.instagram.com/genz.neural_x/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-pink-600 transition-colors">
                 <span className="sr-only">Instagram</span>
                 <FaInstagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-                <span className="sr-only">GitHub</span>
-                <FaGithub className="w-5 h-5" />
+              <a href="https://www.linkedin.com/company/gen-z-neural-x?trk=public_profile_topcard-current-company" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-700 transition-colors">
+                <span className="sr-only">LinkedIn</span>
+                <FaLinkedin className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@GenzNeural-X" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-red-600 transition-colors">
+                <span className="sr-only">YouTube</span>
+                <FaYoutube className="w-5 h-5" />
               </a>
             </div>
           </div>

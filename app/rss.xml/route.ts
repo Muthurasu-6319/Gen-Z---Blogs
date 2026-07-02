@@ -2,7 +2,7 @@ import { collection, getDocs, query, limit, Timestamp } from 'firebase/firestore
 import { db } from '@/lib/firebase';
 
 export async function GET() {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com';
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com';
   
   let articles: any[] = [];
   try {

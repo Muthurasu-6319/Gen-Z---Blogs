@@ -10,7 +10,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"], display: 'swap' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'),
   title: {
     default: "GenZ Articles - Modern Insights for the New Generation",
     template: "%s | GenZ Articles"
@@ -97,18 +97,18 @@ export default async function RootLayout({
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/#website`,
-                  "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com',
+                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/#website`,
+                  "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com',
                   "name": "GenZ Articles",
                   "description": "A professional blog website targeting worldwide audience with modern insights.",
                   "publisher": {
-                    "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/#organization`
+                    "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/#organization`
                   },
                   "potentialAction": [{
                     "@type": "SearchAction",
                     "target": {
                       "@type": "EntryPoint",
-                      "urlTemplate": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/search?q={search_term_string}`
+                      "urlTemplate": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/search?q={search_term_string}`
                     },
                     "query-input": "required name=search_term_string"
                   }],
@@ -116,15 +116,15 @@ export default async function RootLayout({
                 },
                 {
                   "@type": "Organization",
-                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/#organization`,
+                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/#organization`,
                   "name": "GenZ Articles",
-                  "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com',
+                  "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com',
                   "logo": {
                     "@type": "ImageObject",
                     "inLanguage": "en-US",
-                    "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/#/schema/logo/image/`,
-                    "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/favicon.ico`,
-                    "contentUrl": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com'}/favicon.ico`,
+                    "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/#/schema/logo/image/`,
+                    "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/favicon.ico`,
+                    "contentUrl": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com'}/favicon.ico`,
                     "width": 256,
                     "height": 256,
                     "caption": "GenZ Articles"

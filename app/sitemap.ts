@@ -3,7 +3,7 @@ import { collection, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblog.example.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://genzblogs.genzneuralx.com';
   
   // Static routes
   const routes = ['', '/blog', '/about', '/contact', '/privacy-policy', '/terms-conditions'].map((route) => ({
